@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Stevora</title>
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#000000">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/733/733585.png">
+    <meta http-equiv="refresh" content="3; url=/home">
+    <style>
+        body { background:#000; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; }
+       .splash-box { text-align:center; }
+       .splash-logo { width:90px; height:90px; background:#25D366; border-radius:22px; display:flex; justify-content:center; align-items:center; font-size:42px; font-weight:900; color:#000; margin:0 auto 20px auto; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%{transform:scale(1)} 50%{transform:scale(1.1)} 100%{transform:scale(1)} }
+       .splash-text { color:#fff; letter-spacing:6px; font-weight:900; font-size:22px; }
+       .splash-text span { color:#25D366; }
+       .splash-sub { color:#444; font-size:11px; margin-top:12px; letter-spacing:2px; }
+    </style>
+</head>
+<body>
+    <div class="splash-box">
+        <div class="splash-logo">S</div>
+        <div class="splash-text">STEV<span>ORA</span></div>
+        <div class="splash-sub">BLACK EDITION • BY OFFICIAL STEVE</div>
+    </div>
+<script>
+if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/static/sw.js'); }
+setTimeout(()=>{ window.location.href="/home"; },3000);
+</script>
+</body>
+</html>

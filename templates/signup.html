@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Signup - Stevora</title>
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#000000">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/733/733585.png">
+</head>
+<body class="auth-bg">
+    <div class="auth-box">
+        <h1>STEV<span>ORA</span></h1>
+        <p>Create account</p>
+        <form action="/signup" method="post" enctype="multipart/form-data">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <label style="color:#888;font-size:12px;">Profile Picture (optional)</label>
+            <input type="file" name="profile_pic" accept="image/*">
+            <button type="submit">Sign Up</button>
+        </form>
+        <a href="/login">Already have account? Login</a>
+    </div>
+<script>if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/static/sw.js'); }</script>
+</body>
+</html>

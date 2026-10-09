@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Profile - Stevora</title>
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#000000">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/733/733585.png">
+</head>
+<body>
+    <div style="padding:20px;background:#000;color:#fff;min-height:100vh;">
+        <a href="/home" style="color:#25D366;text-decoration:none;">‹ Back</a>
+        <div style="text-align:center;margin-top:30px;">
+            <div style="width:100px;height:100px;border-radius:50%;background:#25D366;margin:0 auto;display:flex;justify-content:center;align-items:center;font-size:40px;font-weight:900;color:#000;overflow:hidden;">
+                {% if user.profile_pic %}<img src="/static/uploads/{{ user.profile_pic }}" style="width:100%;height:100%;object-fit:cover;">{% else %}{{ user.username[0].upper() }}{% endif %}
+            </div>
+            <h2 style="margin-top:15px;">{{ user.username }}</h2>
+            <form action="/profile" method="post" enctype="multipart/form-data" style="margin-top:20px;">
+                <input type="file" name="profile_pic" accept="image/*" required>
+                <button type="submit" style="background:#25D366;color:#000;padding:10px 20px;border:none;border-radius:8px;margin-top:10px;font-weight:900;">Update Picture</button>
+            </form>
+        </div>
+    </div>
+<script>if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/static/sw.js'); }</script>
+</body>
+</html>

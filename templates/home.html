@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Stevora - Home</title>
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#000000">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/733/733585.png">
+</head>
+<body style="background:#000;">
+    <div class="home-header" style="display:flex;justify-content:space-between;align-items:center;padding:15px;background:#000;border-bottom:1px solid #111;position:sticky;top:0;z-index:10;">
+        <h2 style="color:#fff;letter-spacing:2px;margin:0;">STEV<span style="color:#25D366;">ORA</span></h2>
+        <div>
+            <a href="/profile" style="color:#25D366;text-decoration:none;margin-right:15px;font-size:14px;">Profile</a>
+            <a href="/logout" style="color:#555;text-decoration:none;font-size:14px;">Logout</a>
+        </div>
+    </div>
+
+    <div class="user-list" style="padding:10px;padding-bottom:90px;">
+        {% for user in users %}
+        <a href="/chat/{{ user.id }}" class="user-card" style="display:flex;gap:12px;padding:12px;background:#0a0a0a;border-bottom:1px solid #151515;text-decoration:none;color:#fff;">
+            <div class="avatar" style="width:45px;height:45px;border-radius:50%;background:#25D366;color:#000;display:flex;justify-content:center;align-items:center;font-weight:900;overflow:hidden;">
+                {% if user.profile_pic %}<img src="/static/uploads/{{ user.profile_pic }}" style="width:100%;height:100%;object-fit:cover;">{% else %}{{ user.username[0].upper() }}{% endif %}
+            </div>
+            <div>
+                <b style="font-size:14px;">{{ user.username }}</b><br>
+                <small style="color:#666;">Tap to chat on Stevora</small>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+
+    <!-- MONETAG MONEY BOX - This is where you will earn -->
+    <div id="monetag-ad" style="position:fixed;bottom:0;left:0;width:100%;background:#0f0f0f;border-top:1px solid #25D366;padding:6px;text-align:center;z-index:9999;">
+        <small style="color:#444;font-size:8px;letter-spacing:1px;">SPONSORED • SUPPORTS STEVORA</small>
+        <div style="min-height:55px;display:flex;align-items:center;justify-content:center;background:#0a0a0a;margin-top:4px;border-radius:6px;">
+            <!-- PASTE YOUR MONETAG CODE HERE AFTER YOU GET IT FROM MONETAG.COM -->
+            <!-- Example: <script src="https://alwingulla.com/88/tag.min.js" data-zone="123456" async data-cfasync="false"></script> -->
+            <span style="color:#333;font-size:11px;">Ad space - Your earnings will show here</span>
+        </div>
+    </div>
+
+<script>
+if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/static/sw.js'); }
+</script>
+</body>
+</html>
