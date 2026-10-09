@@ -1,48 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/style.css">
-    <title>Chat</title>
-    <link rel="manifest" href="/static/manifest.json">
-    <meta name="theme-color" content="#000000">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/733/733585.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{margin:0;box-sizing:border-box;font-family:Inter,sans-serif}
+body{background:#fff;display:flex;flex-direction:column;height:100vh}
+.top{padding:14px 16px;border-bottom:1px solid #dbdbdb;display:flex;align-items:center;gap:12px}
+.avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(45deg,#fa7e1e,#d62976)}
+.name{font-weight:600}
+.messages{flex:1;padding:16px;overflow-y:auto;background:#fafafa;display:flex;flex-direction:column;gap:10px}
+.bubble{max-width:70%;padding:10px 14px;border-radius:18px;font-size:14px}
+.me{align-self:flex-end;background:linear-gradient(45deg,#962fbf,#d62976);color:white;border-bottom-right-radius:4px}
+.them{align-self:flex-start;background:white;border:1px solid #dbdbdb;border-bottom-left-radius:4px}
+.input-area{padding:12px;border-top:1px solid #dbdbdb;display:flex;gap:10px}
+.input-area input{flex:1;padding:12px 16px;border:1px solid #dbdbdb;border-radius:24px;outline:none;background:#fafafa}
+.input-area button{width:44px;height:44px;border-radius:50%;border:none;background:#000;color:white;font-size:18px;cursor:pointer}
+.nav{position:fixed;bottom:60px;left:0;right:0;display:none}
+@media(max-width:600px){.nav{display:flex;justify-content:space-around;padding:10px;background:white;border-top:1px solid #dbdbdb;position:fixed;bottom:0;left:0;right:0}}
+</style>
 </head>
 <body>
-    <div class="chat-wrap">
-        <div class="chat-header">
-            <a href="/home" style="color:#25D366;text-decoration:none;font-size:22px;margin-right:10px;">‹</a>
-            <div style="display:flex;align-items:center;gap:10px;">
-                <div style="width:36px;height:36px;border-radius:50%;background:#25D366;color:#000;display:flex;justify-content:center;align-items:center;font-weight:900;">{{ other_user.username[0].upper() }}</div>
-                <div><b>{{ other_user.username }}</b><br><small style="color:#25D366;font-size:11px;">online</small></div>
-            </div>
-        </div>
-        <div class="messages" id="messages">
-            {% for m in messages %}
-                <div class="msg {% if m.sender_id == session.user_id %}sent{% else %}recv{% endif %}">{{ m.content }}<span class="time">{{ m.timestamp[11:16] if m.timestamp else '' }}</span></div>
-            {% endfor %}
-        </div>
-        <div class="input-area">
-            <input type="text" id="msgInput" placeholder="Message..."><button id="sendBtn">➤</button>
-        </div>
-    </div>
-    <audio id="notifSound" src="https://cdn.pixabay.com/audio/2021/08/04/audio_a9bd4170e8.mp3" preload="auto"></audio>
-    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/static/sw.js'); }
-        if (Notification && Notification.permission!=="granted") { Notification.requestPermission(); }
-        const socket=io(); const sender={{ session.user_id }}; const receiver={{ other_user.id }}; const otherName="{{ other_user.username }}";
-        const messagesDiv=document.getElementById('messages'); const input=document.getElementById('msgInput'); const sound=document.getElementById('notifSound');
-        socket.emit('join',{sender:sender,receiver:receiver});
-        function scrollBottom(){ messagesDiv.scrollTop=messagesDiv.scrollHeight; } scrollBottom();
-        document.getElementById('sendBtn').onclick=send; input.addEventListener('keypress',e=>{ if(e.key==='Enter') send(); });
-        function send(){ const c=input.value.trim(); if(!c) return; socket.emit('send_message',{sender:sender,receiver:receiver,content:c}); input.value=''; }
-        socket.on('new_message',data=>{
-            const isMe=data.sender_id===sender; const div=document.createElement('div'); div.className='msg '+(isMe?'sent':'recv'); div.innerHTML=data.content+`<span class="time">${data.time}</span>`;
-            messagesDiv.appendChild(div); scrollBottom();
-            if(!isMe){ sound.play().catch(()=>{}); if(document.hidden && Notification.permission==="granted"){ new Notification(otherName+" • Stevora",{body:data.content}); } if(navigator.vibrate) navigator.vibrate(200); }
-        });
-    </script>
+<div class="top"><div class="avatar"></div><div class="name">Stevora Chat</div></div>
+<div class="messages" id="msgs">
+<div class="bubble them">Hey! Welcome to Stevora 👋</div>
+<div class="bubble me">Thanks! This looks super cool 😍</div>
+</div>
+<div class="input-area">
+<input id="msgInput" placeholder="Message...">
+<button onclick="send()">↑</button>
+</div>
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+<script>
+const socket = io();
+function send(){
+let i=document.getElementById('msgInput'); if(!i.value)return;
+let div=document.createElement('div'); div.className='bubble me'; div.textContent=i.value;
+document.getElementById('msgs').appendChild(div); socket.emit('message',i.value); i.value='';
+}
+socket.on('message', m=>{
+let div=document.createElement('div'); div.className='bubble them'; div.textContent=m;
+document.getElementById('msgs').appendChild(div);
+});
+</script>
 </body>
 </html>
